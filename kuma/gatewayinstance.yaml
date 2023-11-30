@@ -1,0 +1,24 @@
+apiVersion: kuma.io/v1alpha1
+kind: MeshGatewayInstance
+metadata:
+  name: edge-gateway
+  namespace: otel-demo
+spec:
+  replicas: 1
+  serviceType: LoadBalancer
+  tags:
+    kuma.io/service: oteldemo_gateway
+---
+apiVersion: kuma.io/v1alpha1
+kind: MeshGateway
+mesh: default
+metadata:
+  name: otel-demo
+spec:
+  conf:
+    listeners:
+      - port: 80
+        protocol: HTTP
+  selectors:
+    - match:
+        kuma.io/service: oteldemo_gateway

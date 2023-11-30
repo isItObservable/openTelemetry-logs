@@ -1,0 +1,48 @@
+apiVersion: kuma.io/v1alpha1
+kind: MeshAccessLog
+metadata:
+  name: default
+  namespace: kuma-system
+  labels:
+    kuma.io/mesh: default # optional, defaults to `default` if it isn't configured
+spec:
+  targetRef:
+    kind: Mesh
+  from: # delete this section if you don't want to log incoming traffic
+    - targetRef:
+        kind: Mesh
+      default:
+        backends:
+          - type: OpenTelemetry
+            openTelemetry:
+              endpoint: oteld-collector.default.svc.cluster.local:4317
+              attributes:
+                - key: "start_time"
+                  value: "%START_TIME%"
+                - key: "upstrea_transport_failure_reason"
+                  value: "%UPSTREAM_TRANSPORT_FAILURE_REASON%"
+                - key: "REQUEST_DURATION"
+                  value: "%REQUEST_DURATION%"
+                - key: "connection_termination_detail"
+                  value: "%CONNECTION_TERMINATION_DETAILS%"
+                - key: "response_code_detail"
+                  value: "%RESPONSE_CODE_DETAILS%"
+  to: # delete this section if you don't want to log outgoing traffic
+    - targetRef:
+        kind: Mesh
+      default:
+        backends:
+          - type: OpenTelemetry
+            openTelemetry:
+              endpoint: oteld-collector.default.svc.cluster.local:4317
+              attributes:
+                - key: "start_time"
+                  value: "%START_TIME%"
+                - key: "upstrea_transport_failure_reason"
+                  value: "%UPSTREAM_TRANSPORT_FAILURE_REASON%"
+                - key: "REQUEST_DURATION"
+                  value: "%REQUEST_DURATION%"
+                - key: "connection_termination_detail"
+                  value: "%CONNECTION_TERMINATION_DETAILS%"
+                - key: "response_code_detail"
+                  value: "%RESPONSE_CODE_DETAILS%"

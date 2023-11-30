@@ -1,0 +1,25 @@
+apiVersion: kuma.io/v1alpha1
+kind: MeshGatewayRoute
+mesh: default
+metadata:
+  name: oteldemo
+spec:
+  conf:
+    http:
+      rules:
+        - matches:
+            - path:
+                match: PREFIX
+                value: /
+          backends:
+            - destination:
+                kuma.io/service: opentelemetry-demo-frontend_otel-demo_svc_8080
+              weight: 1
+          filter:
+          - requestHeader:
+              set:
+                - name: Host
+                  value: oteldemo.IP_TO_REPLACE.nip.io
+  selectors:
+    - match:
+        kuma.io/service: oteldemo_gateway

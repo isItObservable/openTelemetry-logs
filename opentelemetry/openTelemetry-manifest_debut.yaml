@@ -49,8 +49,7 @@ spec:
 
 
   config: |
-    receivers:
-    
+    receivers: 
       prometheus:
         config:
           scrape_configs:
@@ -153,7 +152,8 @@ spec:
             from: attributes.uid
             to: resource["k8s.pod.uid"]
       otlp:
-         grpc:
+        protocols:
+          grpc:
             endpoint: $MY_POD_IP:4317
           http:
             endpoint: $MY_POD_IP:4318
@@ -210,18 +210,13 @@ spec:
         spike_limit_percentage: 30
       transform/metrics:
         metric_statements:
-          context: metric
-          statements:
-            - replace_pattern(unit, "_", "") where IsMatch(unit,".*[_]{1}.*")
-            - replace_pattern(name,"^(.*)$","longer.name.$$1") where Len(name) <= 4
-            - set(resource.attributes["cumulative"],"true") where aggregation_temporality == AGGREGATION_TEMPORALITY_CUMULATIVE
+          - context: metric
+            statements:
+              - replace_pattern(unit, "_", "") where IsMatch(unit,".*[_]{1}.*")
+              - replace_pattern(name,"^(.*)$","longer.name.$$1") where Len(name) <= 4
+              - set(resource.attributes["cumulative"],"true") where aggregation_temporality == AGGREGATION_TEMPORALITY_CUMULATIVE
     
-      filter:
-        error_mode: ignore
-        metrics:
-           metric:
-             - 'type == METRIC_DATA_TYPE_HISTOGRAM'
-             - 'IsMatch(name, "kafka.consumer.*")'
+
 
     exporters:
       logging:
@@ -263,4 +258,3 @@ spec:
       telemetry:
         metrics:
           address: $MY_POD_IP:8888
-      ---

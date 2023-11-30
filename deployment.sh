@@ -72,8 +72,8 @@ kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releas
 sleep 10
 
 kubectl create secret generic dynatrace  --from-literal=dynatrace_oltp_url="$DTURL" --from-literal=dt_api_token="$DTTOKEN"
-kubectl apply -f openTelemetry-demo/rbac.yaml
-kubectl apply -f openTelemetry-demo/openTelemetry-manifest_debut.yaml
+kubectl apply -f openTelemetry/rbac.yaml
+kubectl apply -f openTelemetry/openTelemetry-manifest_debut.yaml
 
 kumactl install control-plane \
   --set "controlPlane.mode=standalone" \
@@ -84,7 +84,7 @@ kumactl install control-plane \
 kubectl create ns otel-demo
 kubectl label ns otel-demo kuma.io/sidecar-injection=enabled
 
-kubectl apply -f openTelemetry/gatewayinstance.yaml -n otel-demo
+kubectl apply -f kuma/gatewayinstance.yaml -n otel-demo
 
 ### get the ip adress of ingress ####
 IP=""
@@ -94,8 +94,8 @@ while [ -z $IP ]; do
   [ -z "$IP" ] && sleep 10
 done
 echo 'Found external IP: '$IP
-sed -i "s,IP_TO_REPLACE,$IP," openTelemetry-demo/deployment.yaml
-sed -i "s,IP_TO_REPLACE,$IP," openTelemetry-demo/gateway.yaml
+sed -i "s,IP_TO_REPLACE,$IP," openTelemetry/deployment.yaml
+sed -i "s,IP_TO_REPLACE,$IP," kuma/gateway.yaml
 
 kubectl apply -f openTelemetry/deployment.yaml -n otel-demo
 kubectl apply -f kuma/gateway.yaml

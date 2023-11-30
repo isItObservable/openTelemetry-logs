@@ -70,7 +70,7 @@ cd kuma-2.5.0/bin
 ```
 this directory contains samples with addons . We will refer to it later.
 ```shell
-export PATH=$PWD/bin:$PATH
+export PATH=$PWD:$PATH
 ```
 
 ### Clone the Github Repository

@@ -2,7 +2,6 @@
 <p align="center"><img src="/image/logo.png" width="40%" alt="Is It observable Logo" /></p>
 
 ## Episode : Collecting logs with the OpenTelemetry Logs
-<p align="center"><img src="/image/kuma_logo.jpg" width="40%" alt="Is It observable Logo" /></p>
 This repository contains the files utilized during the tutorial presented in the dedicated IsItObservable episode related to the episode explaining how to collect logs with the OpenTelemtry collector.
 this tutorial will also utilize the OpenTelemetry Transformation Language.
 
